@@ -20,6 +20,7 @@ dependencies {
     implementation("org.slf4j:slf4j-log4j12:${project.slf4j_log4j12_version}")
     implementation("org.openpnp:opencv:${project.opencv_version}")
     implementation("com.google.guava:guava:${project.guava_version}")
+    implementation("org.apache.commons:commons-io:${project.commons_io_version}")
 }
 
 ext {
