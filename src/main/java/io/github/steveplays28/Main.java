@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Scalar;
+import org.opencv.core.Size;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.slf4j.LoggerFactory;
@@ -40,7 +41,10 @@ public class Main {
 		return Imgcodecs.imread(imagePath);
 	}
 
-	public static boolean saveImage(String imagePath, Mat image) {
+	public static boolean saveProcessedImage(String originalImageFilePath, String suffix, Mat image) {
+		var imagePath = String.format("%s/%s_%s.%s", PROCESSED_IMAGES_PATH, FilenameUtils.getBaseName(originalImageFilePath), suffix,
+				FilenameUtils.getExtension(originalImageFilePath)
+		);
 		return Imgcodecs.imwrite(imagePath, image);
 	}
 
@@ -49,27 +53,32 @@ public class Main {
 		Mat resultImage = new Mat();
 		Mat colorConvertedImage = new Mat();
 		Imgproc.cvtColor(loadedImage, colorConvertedImage, Imgproc.COLOR_BGR2RGB, 0);
-		var resultOk = saveImage(
-				String.format(
-						"%s/%s_color_converted.%s", PROCESSED_IMAGES_PATH, FilenameUtils.getBaseName(filePath.toString()),
-						FilenameUtils.getExtension(filePath.toString())
-				), colorConvertedImage);
+		var resultOk = saveProcessedImage(filePath.toString(), "color_converted", colorConvertedImage);
 		if (resultOk) {
 			LOGGER.info("Converted image colors successfully.");
 		} else {
 			LOGGER.info("Error occurred when saving the color converted image.");
 		}
 
-		Core.inRange(
-				colorConvertedImage, new Scalar(getColorLowerBound(BLUE_BOTTLE_COLOR).toDoubleArrayWithAlpha(1d)),
+		// Color filtering
+		Core.inRange(colorConvertedImage, new Scalar(getColorLowerBound(BLUE_BOTTLE_COLOR).toDoubleArrayWithAlpha(1d)),
 				new Scalar(getColorUpperBound(BLUE_BOTTLE_COLOR).toDoubleArrayWithAlpha(1d)), resultImage
 		);
 
-		var resultOk2 = saveImage(String.format(
-				"%s/%s_processed.%s", PROCESSED_IMAGES_PATH, FilenameUtils.getBaseName(filePath.toString()),
-				FilenameUtils.getExtension(filePath.toString())
-		), resultImage);
+		var resultOk2 = saveProcessedImage(filePath.toString(), "processed", resultImage);
 		if (resultOk2) {
+			LOGGER.info("Processed image successfully.");
+		} else {
+			LOGGER.info("Error occurred when saving the processed image.");
+		}
+
+		// Canny edge detection
+		Mat cannyEdgeDetectedImage = new Mat();
+		Imgproc.blur(colorConvertedImage, colorConvertedImage, new Size(3, 3));
+		Imgproc.Canny(colorConvertedImage, cannyEdgeDetectedImage, 300, 600, 5, true);
+
+		var resultOk3 = saveProcessedImage(filePath.toString(), "canny_edge_detection_processed", cannyEdgeDetectedImage);
+		if (resultOk3) {
 			LOGGER.info("Processed image successfully.");
 		} else {
 			LOGGER.info("Error occurred when saving the processed image.");
