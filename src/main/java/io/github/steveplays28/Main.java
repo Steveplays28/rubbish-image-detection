@@ -90,8 +90,9 @@ public class Main {
 
 		// Canny edge detection
 		Mat cannyEdgeDetectedImage = new Mat();
+		Imgproc.cvtColor(colorConvertedImage, colorConvertedImage, Imgproc.COLOR_RGB2GRAY);
 		Imgproc.blur(colorConvertedImage, colorConvertedImage, new Size(3, 3));
-		Imgproc.Canny(colorConvertedImage, cannyEdgeDetectedImage, 300, 600, 5, true);
+		Imgproc.Canny(colorConvertedImage, cannyEdgeDetectedImage, 100, 210, 3, true);
 
 		var resultOk3 = saveProcessedImage(filePath.toString(), "canny_edge_detection_processed", cannyEdgeDetectedImage);
 		if (resultOk3) {
