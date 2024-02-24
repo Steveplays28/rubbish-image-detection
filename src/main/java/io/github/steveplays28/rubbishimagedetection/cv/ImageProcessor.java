@@ -47,12 +47,12 @@ public class ImageProcessor {
 	 */
 	public static void processImage(@NotNull Path outputDirectory, @NotNull Image image) {
 		var colorConvertedImage = convertImageColorSpace(image.matrix());
-		saveProcessedImage(outputDirectory, image, filterImageColors(colorConvertedImage));
-		saveProcessedImage(outputDirectory, image, cannyDetectEdges(colorConvertedImage));
+		saveProcessedImage(outputDirectory, image, "color_filtering", filterImageColors(colorConvertedImage));
+		saveProcessedImage(outputDirectory, image, "canny_edge_detection", cannyDetectEdges(colorConvertedImage));
 	}
 
-	private static void saveProcessedImage(@NotNull Path outputDirectory, @NotNull Image image, @NotNull Mat matrix) {
-		Imgcodecs.imwrite(String.format("%s/processed_image_%s.png", outputDirectory, image.name()), matrix);
+	private static void saveProcessedImage(@NotNull Path outputDirectory, @NotNull Image image, @NotNull String fileNameSuffix, @NotNull Mat matrix) {
+		Imgcodecs.imwrite(String.format("%s/%s_processed_%s.png", outputDirectory, image.name(), fileNameSuffix), matrix);
 	}
 
 	private static @NotNull Mat convertImageColorSpace(@NotNull Mat image) {
