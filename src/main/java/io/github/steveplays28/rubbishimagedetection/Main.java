@@ -19,8 +19,8 @@ package io.github.steveplays28.rubbishimagedetection;
 import io.github.steveplays28.rubbishimagedetection.cli.CLIOptionsParser;
 import io.github.steveplays28.rubbishimagedetection.cv.ImageProcessor;
 import io.github.steveplays28.rubbishimagedetection.cv.OpenCVLoader;
+import io.github.steveplays28.rubbishimagedetection.log.RIDLog4JConfigurator;
 import io.github.steveplays28.rubbishimagedetection.util.Color;
-import org.apache.log4j.BasicConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,8 +31,8 @@ public class Main {
 	public static final Color BLUE_BOTTLE_COLOR = new Color(255, 70, 1);
 
 	public static void main(String[] args) {
+		RIDLog4JConfigurator.configure();
 		OpenCVLoader.loadOpenCV();
-		BasicConfigurator.configure();
 		var cliOptions = CLIOptionsParser.parse(args);
 		ImageProcessor.processImagesInFolder(cliOptions);
 	}
