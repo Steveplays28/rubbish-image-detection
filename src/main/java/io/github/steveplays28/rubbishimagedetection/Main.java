@@ -14,23 +14,26 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.steveplays28;
+package io.github.steveplays28.rubbishimagedetection;
 
-import io.github.steveplays28.cli.CLIOptionsParser;
-import io.github.steveplays28.cv.ImageProcessor;
-import io.github.steveplays28.cv.OpenCVLoader;
-import io.github.steveplays28.util.Color;
+import io.github.steveplays28.rubbishimagedetection.cli.CLIOptionsParser;
+import io.github.steveplays28.rubbishimagedetection.cv.ImageProcessor;
+import io.github.steveplays28.rubbishimagedetection.cv.OpenCVLoader;
+import io.github.steveplays28.rubbishimagedetection.util.Color;
+import org.apache.log4j.BasicConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class Main {
-	public static final Logger LOGGER = LoggerFactory.getLogger("Rubbish Image Detection");
+	public static final String PROJECT_ID = "rubbish-image-detection";
+	public static final Logger LOGGER = LoggerFactory.getLogger(PROJECT_ID);
 	public static final int COLOR_BOUNDS_DEVIATION = 15;
 	public static final Color BLUE_BOTTLE_COLOR = new Color(255, 70, 1);
 
 	public static void main(String[] args) {
 		OpenCVLoader.loadOpenCV();
-		var cliOptions = CLIOptionsParser.parse();
+		BasicConfigurator.configure();
+		var cliOptions = CLIOptionsParser.parse(args);
 		ImageProcessor.processImagesInFolder(cliOptions);
 	}
 }

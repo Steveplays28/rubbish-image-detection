@@ -3,7 +3,11 @@ plugins {
 }
 
 group = project.group
-version = project.version
+version = project.project_version
+
+base {
+    archivesName = project.project_id
+}
 
 repositories {
     mavenCentral()
@@ -19,6 +23,25 @@ dependencies {
     implementation("com.google.guava:guava:${project.guava_version}")
     implementation("org.apache.commons:commons-io:${project.commons_io_version}")
     implementation("commons-cli:commons-cli:${project.commons_cli_version}")
+}
+
+jar {
+    from("LICENSE") {
+        rename { "${it}_${project.archives_base_name}" }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
+
+    from {
+        configurations.compileClasspath.collect {
+            it.isDirectory() ? it : zipTree(it)
+        }
+    }
+
+    manifest {
+        attributes("Name": project.project_name, "Main-Class": "${project.group}.${project.archives_base_name}.Main")
+    }
 }
 
 test {

@@ -1,7 +1,7 @@
-package io.github.steveplays28.cv;
+package io.github.steveplays28.rubbishimagedetection.cv;
 
-import io.github.steveplays28.cli.CLIOptions;
-import io.github.steveplays28.util.Color;
+import io.github.steveplays28.rubbishimagedetection.cli.CLIOptions;
+import io.github.steveplays28.rubbishimagedetection.util.Color;
 import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 import org.opencv.core.Core;
@@ -16,13 +16,17 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-import static io.github.steveplays28.Main.*;
+import static io.github.steveplays28.rubbishimagedetection.Main.*;
 
 public class ImageProcessor {
 	public static void processImagesInFolder(@NotNull CLIOptions cliOptions) {
 		try (var filePaths = Files.walk(cliOptions.inputDirectory())) {
 			filePaths.filter(Files::isRegularFile).forEach(
 					path -> processImage(cliOptions.outputDirectory(), parseImageFile(path.toFile())));
+
+			LOGGER.info("Successfully processed all images in {}. The resulting images have been saved in {}.", cliOptions.inputDirectory(),
+					cliOptions.outputDirectory()
+			);
 		} catch (IOException ex) {
 			LOGGER.error("Error while traversing unprocessed images folder: ", ex);
 		}

@@ -1,4 +1,4 @@
-package io.github.steveplays28.cli;
+package io.github.steveplays28.rubbishimagedetection.cli;
 
 import java.nio.file.Path;
 

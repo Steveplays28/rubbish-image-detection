@@ -1,6 +1,6 @@
-package io.github.steveplays28.cv;
+package io.github.steveplays28.rubbishimagedetection.cv;
 
-import io.github.steveplays28.Main;
+import io.github.steveplays28.rubbishimagedetection.Main;
 import nu.pattern.OpenCV;
 
 public class OpenCVLoader {

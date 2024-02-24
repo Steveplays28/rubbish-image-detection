@@ -14,11 +14,11 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.steveplays28.util;
+package io.github.steveplays28.rubbishimagedetection.util;
 
 import org.jetbrains.annotations.NotNull;
 
-import static io.github.steveplays28.util.MathUtil.clamp;
+import static io.github.steveplays28.rubbishimagedetection.util.MathUtil.clamp;
 
 /**
  * Color class that takes in red, green and blue values between 0-255. Values outside of this range are truncated.

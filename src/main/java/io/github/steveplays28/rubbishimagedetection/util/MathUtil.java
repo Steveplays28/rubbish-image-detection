@@ -14,7 +14,7 @@
 //    You should have received a copy of the GNU General Public License
 //    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.steveplays28.util;
+package io.github.steveplays28.rubbishimagedetection.util;
 
 public class MathUtil {
 	public static int clamp(int value, int min, int max) {

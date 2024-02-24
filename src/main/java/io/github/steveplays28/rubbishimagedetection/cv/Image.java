@@ -1,4 +1,4 @@
-package io.github.steveplays28.cv;
+package io.github.steveplays28.rubbishimagedetection.cv;
 
 import org.jetbrains.annotations.NotNull;
 import org.opencv.core.Mat;
