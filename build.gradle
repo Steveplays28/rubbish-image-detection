@@ -1,12 +1,9 @@
 plugins {
-    id 'java'
-    id "application"
+    id "java" apply true
 }
 
-apply plugin: "java"
-
-group = 'io.github.steveplays28'
-version = '1.0-SNAPSHOT'
+group = project.group
+version = project.version
 
 repositories {
     mavenCentral()
@@ -21,14 +18,7 @@ dependencies {
     implementation("org.openpnp:opencv:${project.opencv_version}")
     implementation("com.google.guava:guava:${project.guava_version}")
     implementation("org.apache.commons:commons-io:${project.commons_io_version}")
-}
-
-ext {
-    javaMainClass = "io.github.steveplays28.Main"
-}
-
-application {
-    mainClassName = javaMainClass
+    implementation("commons-cli:commons-cli:${project.commons_cli_version}")
 }
 
 test {
