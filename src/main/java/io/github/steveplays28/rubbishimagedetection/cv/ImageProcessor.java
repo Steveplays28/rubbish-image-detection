@@ -1,7 +1,6 @@
 package io.github.steveplays28.rubbishimagedetection.cv;
 
 import io.github.steveplays28.rubbishimagedetection.cli.CLIOptions;
-import io.github.steveplays28.rubbishimagedetection.util.Color;
 import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 import org.opencv.core.Core;
@@ -15,6 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import static io.github.steveplays28.rubbishimagedetection.Main.*;
 
@@ -63,15 +64,31 @@ public class ImageProcessor {
 	}
 
 	private static @NotNull Mat filterImageColors(@NotNull Mat image) {
-		Mat colorFilteredImage = new Mat();
-		Core.inRange(image, new Scalar(BLUE_BOTTLE_COLOR.subtract(
-						new Color(COLOR_BOUNDS_DEVIATION, COLOR_BOUNDS_DEVIATION, COLOR_BOUNDS_DEVIATION)).toDoubleArrayWithAlpha(1d)), new Scalar(
-						BLUE_BOTTLE_COLOR.add(
-								new Color(COLOR_BOUNDS_DEVIATION, COLOR_BOUNDS_DEVIATION, COLOR_BOUNDS_DEVIATION)).toDoubleArrayWithAlpha(1d)),
-				colorFilteredImage
-		);
+		List<Mat> colorFilteredImages = new ArrayList<>();
+		for (var color : COLORS) {
+			var outputImage = new Mat();
+			var colorLowerBound = color.subtract(COLOR_BOUNDS_DEVIATION);
+			var colorUpperBound = color.add(COLOR_BOUNDS_DEVIATION);
 
-		return colorFilteredImage;
+			Core.inRange(image, new Scalar(colorLowerBound.toDoubleArrayWithAlpha(1d)),
+					new Scalar(colorUpperBound.toDoubleArrayWithAlpha(1d)), outputImage
+			);
+			colorFilteredImages.add(outputImage);
+		}
+
+		Mat previousColorFilteredImage = null;
+		Mat outputImage = new Mat();
+		for (var colorFilteredImage : colorFilteredImages) {
+			if (previousColorFilteredImage == null) {
+				previousColorFilteredImage = colorFilteredImage;
+				continue;
+			}
+
+			Core.bitwise_or(previousColorFilteredImage, colorFilteredImage, outputImage);
+			previousColorFilteredImage = outputImage;
+		}
+
+		return outputImage;
 	}
 
 	private static @NotNull Mat cannyDetectEdges(@NotNull Mat image) {

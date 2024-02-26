@@ -24,11 +24,23 @@ import io.github.steveplays28.rubbishimagedetection.util.Color;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Main {
 	public static final String PROJECT_ID = "rubbish-image-detection";
 	public static final Logger LOGGER = LoggerFactory.getLogger(PROJECT_ID);
 	public static final int COLOR_BOUNDS_DEVIATION = 15;
-	public static final Color BLUE_BOTTLE_COLOR = new Color(255, 70, 1);
+	public static final List<Color> COLORS = new ArrayList<>() {
+		{
+			// Red balls
+			add(new Color(255, 70, 1));
+			// Bottles
+			add(new Color(72, 125, 149));
+			add(new Color(165, 176, 185));
+			add(new Color(18, 108, 67));
+		}
+	};
 
 	public static void main(String[] args) {
 		RIDLog4JConfigurator.configure();

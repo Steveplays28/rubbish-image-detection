@@ -83,12 +83,32 @@ public class Color {
 		return newColor;
 	}
 
+	public @NotNull Color add(int value) {
+		var newColor = new Color(this);
+
+		newColor.red = clamp(newColor.red + value, 0, 255);
+		newColor.green = clamp(newColor.green + value, 0, 255);
+		newColor.blue = clamp(newColor.blue + value, 0, 255);
+
+		return newColor;
+	}
+
 	public Color subtract(@NotNull Color color) {
 		var newColor = new Color(this);
 
 		newColor.red = clamp(newColor.red - color.red, 0, 255);
 		newColor.green = clamp(newColor.green - color.green, 0, 255);
 		newColor.blue = clamp(newColor.blue - color.blue, 0, 255);
+
+		return newColor;
+	}
+
+	public @NotNull Color subtract(int value) {
+		var newColor = new Color(this);
+
+		newColor.red = clamp(newColor.red - value, 0, 255);
+		newColor.green = clamp(newColor.green - value, 0, 255);
+		newColor.blue = clamp(newColor.blue - value, 0, 255);
 
 		return newColor;
 	}
