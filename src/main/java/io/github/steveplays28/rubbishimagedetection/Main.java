@@ -30,7 +30,7 @@ import java.util.List;
 public class Main {
 	public static final String PROJECT_ID = "rubbish-image-detection";
 	public static final Logger LOGGER = LoggerFactory.getLogger(PROJECT_ID);
-	public static final int COLOR_BOUNDS_DEVIATION = 15;
+	public static final int COLOR_BOUNDS_DEVIATION = 30;
 	public static final List<Color> COLORS = new ArrayList<>() {
 		{
 			// Red balls
@@ -44,8 +44,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		RIDLog4JConfigurator.configure();
-		OpenCVLoader.loadOpenCV();
 		var cliOptions = CLIOptionsParser.parse(args);
+		OpenCVLoader.loadOpenCV();
 		ImageProcessor.processImagesInFolder(cliOptions);
 	}
 }

@@ -88,6 +88,10 @@ public class ImageProcessor {
 			previousColorFilteredImage = outputImage;
 		}
 
+		// Apply color filtered image as a mask to the original image
+		Imgproc.cvtColor(outputImage, outputImage, Imgproc.COLOR_GRAY2BGR);
+		Core.bitwise_and(image, outputImage, outputImage);
+		Imgproc.cvtColor(outputImage, outputImage, Imgproc.COLOR_BGR2RGB);
 		return outputImage;
 	}
 

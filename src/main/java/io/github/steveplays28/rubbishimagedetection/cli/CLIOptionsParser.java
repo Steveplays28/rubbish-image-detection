@@ -16,12 +16,13 @@ public class CLIOptionsParser {
 		Options options = new Options();
 
 		Option inputDirectory = new Option("i", "input", true, "Input directory, where unprocessed images are located.");
-		inputDirectory.setRequired(true);
 		options.addOption(inputDirectory);
 
 		Option outputDirectory = new Option("o", "output", true, "Output directory, where processed images will be stored.");
-		outputDirectory.setRequired(true);
 		options.addOption(outputDirectory);
+
+		Option help = new Option("h", "help", false, "Prints the program usage instructions.");
+		options.addOption(help);
 
 		try {
 			commandLine = COMMAND_LINE_PARSER.parse(options, args);
@@ -29,6 +30,16 @@ public class CLIOptionsParser {
 			Main.LOGGER.error(ex.getMessage());
 			HELP_FORMATTER.printHelp(Main.PROJECT_ID, options);
 
+			System.exit(1);
+		}
+
+		if (commandLine.hasOption(help.getOpt())) {
+			HELP_FORMATTER.printHelp(Main.PROJECT_ID, options);
+			System.exit(0);
+		} else if (commandLine.getOptionValue(inputDirectory.getOpt()) == null || commandLine.getOptionValue(
+				outputDirectory.getOpt()) == null) {
+			Main.LOGGER.error("Input directory or output directory was not specified. Check if the arguments have the right name.");
+			HELP_FORMATTER.printHelp(Main.PROJECT_ID, options);
 			System.exit(1);
 		}
 
